@@ -24,11 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.getElementById("add-task").onclick = () => {
-        const title = document.getElementById("task-title").value;
+        const title = document.getElementById("task-title").value.trim();
         const desc = document.getElementById("task-desc").value;
         const diff = document.getElementById("task-difficulty").value;
 
-        if (!title) return alert("Введите название задачи");
+        if (!title) {
+            alert("Введите название задачи");
+            return;
+        }
 
         manager.add(new Task(title, desc, diff, xpMap[diff]));
 
@@ -39,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.getElementById("reset").onclick = () => {
-        if (confirm("Сбросить весь прогресс?")) Storage.clear();
+        if (confirm("Сбросить прогресс?")) Storage.clear();
     };
 
     function render() {
@@ -52,9 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
             (character.xp / character.xpToNext()) * 100 + "%";
 
         const active = document.getElementById("task-list");
-        const done = document.getElementById("completed-list");
+        const completed = document.getElementById("completed-list");
+
         active.innerHTML = "";
-        done.innerHTML = "";
+        completed.innerHTML = "";
 
         manager.active.forEach(task => {
             const li = document.createElement("li");
@@ -83,11 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const li = document.createElement("li");
             li.className = "completed";
             li.textContent = `${task.title} ✔ ${task.completedAt}`;
-            done.appendChild(li);
+            completed.appendChild(li);
         });
 
         document.getElementById("stats-tasks").textContent =
             manager.completed.length;
+
         document.getElementById("stats-xp").textContent =
             character.totalXp;
 
