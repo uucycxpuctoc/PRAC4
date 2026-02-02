@@ -6,7 +6,8 @@ class Task {
         this.difficulty = difficulty;
         this.xp = xp;
         this.completed = false;
-        this.date = new Date().toLocaleString();
+        this.createdAt = new Date().toLocaleString();
+        this.completedAt = null;
     }
 }
 
@@ -21,6 +22,11 @@ class TaskManager {
 
     remove(id) {
         this.tasks = this.tasks.filter(t => t.id !== id);
+    }
+
+    complete(task) {
+        task.completed = true;
+        task.completedAt = new Date().toLocaleString();
     }
 
     get active() {
