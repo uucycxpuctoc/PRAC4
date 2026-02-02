@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>⚔ RPG Task Manager ⚔</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>⚔ RPG Task Manager ⚔</h1>
+</header>
+
+<main>
+    <!-- Персонаж -->
+    <section class="card" id="character-card">
+        <h2>Герой: <span id="char-name"></span></h2>
+        <div class="level">Уровень: <span id="char-level">1</span></div>
+
+        <div class="xp-bar">
+            <div class="xp-fill" id="xp-fill"></div>
+        </div>
+        <div class="xp-text">
+            <span id="xp-current">0</span> /
+            <span id="xp-needed">100</span> XP
+        </div>
+    </section>
+
+    <!-- Создание задачи -->
+    <section class="card">
+        <h2>📝 Новая задача</h2>
+        <input id="task-title" placeholder="Название задачи">
+        <textarea id="task-desc" placeholder="Описание (необязательно)"></textarea>
+
+        <select id="task-difficulty">
+            <option value="easy">Легкая (10 XP)</option>
+            <option value="medium">Средняя (25 XP)</option>
+            <option value="hard">Сложная (50 XP)</option>
+            <option value="epic">Эпическая (100 XP)</option>
+        </select>
+
+        <button id="add-task">➕ Добавить задачу</button>
+    </section>
+
+    <!-- Активные задачи -->
+    <section class="card">
+        <h2>⚡ Активные задачи</h2>
+        <ul id="task-list"></ul>
+    </section>
+
+    <!-- Выполненные -->
+    <section class="card">
+        <h2>✅ Выполненные задачи</h2>
+        <ul id="completed-list"></ul>
+    </section>
+
+    <!-- Статистика -->
+    <section class="card">
+        <h2>📊 Статистика</h2>
+        <p>Выполнено задач: <span id="stats-tasks">0</span></p>
+        <p>Всего опыта: <span id="stats-xp">0</span></p>
+        <button id="reset">♻ Сбросить прогресс</button>
+    </section>
+</main>
+
+<script src="js/storage.js"></script>
+<script src="js/character.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
