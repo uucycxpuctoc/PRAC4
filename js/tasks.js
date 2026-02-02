@@ -6,7 +6,6 @@ class Task {
         this.difficulty = difficulty;
         this.xp = xp;
         this.completed = false;
-        this.createdAt = new Date().toLocaleString();
         this.completedAt = null;
     }
 }
