@@ -1,87 +1,98 @@
-let data = Storage.load();
-let character;
+document.addEventListener("DOMContentLoaded", () => {
 
-if (data.character) {
-    character = Object.assign(new Character(), data.character);
-} else {
-    const name = prompt("Введите имя героя:");
-    character = new Character(name || "Герой");
-}
+    const data = Storage.load();
+    let character;
 
-const manager = new TaskManager();
-manager.tasks = data.tasks || [];
+    if (data.character) {
+        character = Object.assign(
+            new Character(data.character.name),
+            data.character
+        );
+    } else {
+        const name = prompt("Введите имя героя:");
+        character = new Character(name || "Герой");
+    }
 
-const titleInput = document.getElementById('task-title');
-const descInput = document.getElementById('task-desc');
-const diffSelect = document.getElementById('task-difficulty');
+    const manager = new TaskManager();
+    manager.tasks = data.tasks;
 
-const xpMap = {
-    easy: 10,
-    medium: 25,
-    hard: 50,
-    epic: 100
-};
+    const xpMap = {
+        easy: 10,
+        medium: 25,
+        hard: 50,
+        epic: 100
+    };
 
-document.getElementById('add-task').onclick = () => {
-    if (!titleInput.value) return alert("Введите название задачи");
+    document.getElementById("add-task").onclick = () => {
+        const title = document.getElementById("task-title").value;
+        const desc = document.getElementById("task-desc").value;
+        const diff = document.getElementById("task-difficulty").value;
 
-    const xp = xpMap[diffSelect.value];
-    const task = new Task(titleInput.value, descInput.value, diffSelect.value, xp);
-    manager.add(task);
+        if (!title) return alert("Введите название задачи");
 
-    titleInput.value = '';
-    descInput.value = '';
+        manager.add(new Task(title, desc, diff, xpMap[diff]));
+
+        document.getElementById("task-title").value = "";
+        document.getElementById("task-desc").value = "";
+
+        render();
+    };
+
+    document.getElementById("reset").onclick = () => {
+        if (confirm("Сбросить весь прогресс?")) Storage.clear();
+    };
+
+    function render() {
+        document.getElementById("char-name").textContent = character.name;
+        document.getElementById("char-level").textContent = character.level;
+        document.getElementById("xp-current").textContent = character.xp;
+        document.getElementById("xp-needed").textContent = character.xpToNext();
+
+        document.getElementById("xp-fill").style.width =
+            (character.xp / character.xpToNext()) * 100 + "%";
+
+        const active = document.getElementById("task-list");
+        const done = document.getElementById("completed-list");
+        active.innerHTML = "";
+        done.innerHTML = "";
+
+        manager.active.forEach(task => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <label>
+                    <input type="checkbox"> ${task.title} (+${task.xp} XP)
+                </label>
+                <button>❌</button>
+            `;
+
+            li.querySelector("input").onchange = () => {
+                manager.complete(task);
+                character.addExperience(task.xp);
+                render();
+            };
+
+            li.querySelector("button").onclick = () => {
+                manager.remove(task.id);
+                render();
+            };
+
+            active.appendChild(li);
+        });
+
+        manager.completed.forEach(task => {
+            const li = document.createElement("li");
+            li.className = "completed";
+            li.textContent = `${task.title} ✔ ${task.completedAt}`;
+            done.appendChild(li);
+        });
+
+        document.getElementById("stats-tasks").textContent =
+            manager.completed.length;
+        document.getElementById("stats-xp").textContent =
+            character.totalXp;
+
+        Storage.save(character, manager.tasks);
+    }
 
     render();
-};
-
-document.getElementById('reset').onclick = () => {
-    if (confirm("Сбросить весь прогресс?")) Storage.clear();
-};
-
-function render() {
-    document.getElementById('char-name').textContent = character.name;
-    document.getElementById('char-level').textContent = character.level;
-    document.getElementById('xp-current').textContent = character.xp;
-    document.getElementById('xp-needed').textContent = character.xpToNext();
-
-    document.getElementById('xp-fill').style.width =
-        (character.xp / character.xpToNext()) * 100 + "%";
-
-    const list = document.getElementById('task-list');
-    const done = document.getElementById('completed-list');
-    list.innerHTML = done.innerHTML = '';
-
-    manager.active.forEach(t => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <input type="checkbox">
-            ${t.title} (+${t.xp} XP)
-            <button>❌</button>
-        `;
-        li.querySelector('input').onclick = () => {
-            t.completed = true;
-            character.addExperience(t.xp);
-            render();
-        };
-        li.querySelector('button').onclick = () => {
-            manager.remove(t.id);
-            render();
-        };
-        list.appendChild(li);
-    });
-
-    manager.completed.forEach(t => {
-        const li = document.createElement('li');
-        li.classList.add('completed');
-        li.textContent = `${t.title} ✔ (${t.date})`;
-        done.appendChild(li);
-    });
-
-    document.getElementById('stats-tasks').textContent = manager.completed.length;
-    document.getElementById('stats-xp').textContent = character.totalXp;
-
-    Storage.save(character, manager.tasks);
-}
-
-render();
+});
