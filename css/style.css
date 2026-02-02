@@ -12,7 +12,7 @@ body {
 header {
     text-align: center;
     padding: 25px;
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     border-bottom: 2px solid gold;
 }
@@ -29,11 +29,7 @@ main {
     border-radius: 12px;
     padding: 18px;
     margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(255,215,0,0.1);
-}
-
-h2 {
-    margin-top: 0;
+    box-shadow: 0 0 20px rgba(255,215,0,0.15);
 }
 
 input, textarea, select, button {
@@ -49,7 +45,6 @@ input, textarea, select, button {
 button {
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 button:hover {
@@ -70,7 +65,7 @@ button:hover {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, gold, orange);
-    transition: width 0.5s ease;
+    transition: width 0.5s;
 }
 
 ul {
