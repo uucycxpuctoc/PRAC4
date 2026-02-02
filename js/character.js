@@ -4,7 +4,6 @@ class Character {
         this.level = 1;
         this.xp = 0;
         this.totalXp = 0;
-        this.createdAt = new Date().toLocaleDateString();
     }
 
     xpToNext() {
@@ -18,7 +17,7 @@ class Character {
         if (this.xp >= this.xpToNext()) {
             this.xp -= this.xpToNext();
             this.level++;
-            alert(`🎉 УРОВЕНЬ ПОВЫШЕН!\nТеперь уровень ${this.level}`);
+            alert(`🎉 Уровень повышен! Теперь уровень ${this.level}`);
         }
     }
 }
