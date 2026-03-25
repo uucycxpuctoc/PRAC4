@@ -2,68 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>⚔ RPG Task Manager ⚔</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>DOM Chess - Шахматы на JavaScript</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<header>
-    ⚔ RPG Task Manager ⚔
-</header>
-
-<main>
-
-    <section class="card">
-        <h2>Герой</h2>
-        <p>Имя: <strong id="char-name"></strong></p>
-        <p>Уровень: <span id="char-level">1</span></p>
-
-        <div class="xp-bar">
-            <div class="xp-fill" id="xp-fill"></div>
+    <div class="container">
+        <div class="game-container">
+            <div class="info-panel">
+                <div class="player-turn">
+                    <div class="turn-indicator">
+                        <span class="turn-text">Ход:</span>
+                        <span class="current-player">Белые</span>
+                    </div>
+                    <div class="turn-color-indicator white-turn"></div>
+                </div>
+                <div class="game-controls">
+                    <button id="newGameBtn" class="control-btn">🔄 Новая игра</button>
+                    <button id="undoBtn" class="control-btn">↩️ Отменить ход</button>
+                </div>
+                <div class="game-status">
+                    <div class="status-message"></div>
+                </div>
+            </div>
+            <div id="chessBoard" class="chess-board"></div>
+            <div class="captured-pieces">
+                <div class="captured-title">Взятые фигуры</div>
+                <div class="captured-white"></div>
+                <div class="captured-black"></div>
+            </div>
         </div>
-
-        <p><span id="xp-current">0</span> / <span id="xp-needed">100</span> XP</p>
-    </section>
-
-    <section class="card">
-        <h2>📝 Новая задача</h2>
-
-        <input id="task-title" placeholder="Название задачи">
-        <textarea id="task-desc" placeholder="Описание (необязательно)"></textarea>
-
-        <select id="task-difficulty">
-            <option value="easy">Легкая (10 XP)</option>
-            <option value="medium">Средняя (25 XP)</option>
-            <option value="hard">Сложная (50 XP)</option>
-            <option value="epic">Эпическая (100 XP)</option>
-        </select>
-
-        <button id="add-task">➕ Добавить задачу</button>
-    </section>
-
-    <section class="card">
-        <h2>⚡ Активные задачи</h2>
-        <ul id="task-list"></ul>
-    </section>
-
-    <section class="card">
-        <h2>✅ Выполненные задачи</h2>
-        <ul id="completed-list"></ul>
-    </section>
-
-    <section class="card">
-        <h2>📊 Статистика</h2>
-        <p>Выполнено задач: <span id="stats-tasks">0</span></p>
-        <p>Всего опыта: <span id="stats-xp">0</span></p>
-        <button id="reset">♻ Сбросить прогресс</button>
-    </section>
-
-</main>
-
-<script src="js/storage.js"></script>
-<script src="js/character.js"></script>
-<script src="js/tasks.js"></script>
-<script src="js/app.js"></script>
-
+    </div>
+    <script type="module" src="js/game.js"></script>
 </body>
 </html>
